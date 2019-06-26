@@ -37,7 +37,8 @@ PLAYER				playerWk[PLAYER_MAX];		// 構造体
 D3DXMATRIX			g_mtxWorldPlayer;			// ワールドマトリックス
 int					g_player;					// プレイヤーナンバー
 
-bool				g_update[PLAYER_MAX];
+bool				g_update_x[PLAYER_MAX];
+bool				g_update_z[PLAYER_MAX];
 
 //=============================================================================
 // 初期化処理
@@ -49,7 +50,6 @@ HRESULT InitPlayer(void)
 
 	for (int i = 0; i < PLAYER_MAX; i++, player++)
 	{
-
 		player->pD3DTexture = NULL;
 		player->g_pD3DVtxBuff = NULL;
 
@@ -74,7 +74,7 @@ HRESULT InitPlayer(void)
 
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		g_update[i] = false;
+		g_update_x[i] = false;
 	}
 
 	return S_OK;
@@ -139,12 +139,22 @@ void UpdatePlayer(void)
 
 	if (GetKeyboardPress(DIK_A) || GetKeyboardPress(DIK_D))
 	{
-		g_update[0] = true;
+		g_update_x[0] = true;
 	}
 
 	if (GetKeyboardPress(DIK_LEFT) || GetKeyboardPress(DIK_RIGHT))
 	{
-		g_update[1] = true;
+		g_update_x[1] = true;
+	}
+
+	if (GetKeyboardPress(DIK_W) || GetKeyboardPress(DIK_S))
+	{
+		g_update_z[0] = true;
+	}
+
+	if (GetKeyboardPress(DIK_UP) || GetKeyboardPress(DIK_DOWN))
+	{
+		g_update_z[1] = true;
 	}
 
 	if(GetKeyboardPress(DIK_D))
@@ -262,6 +272,7 @@ void UpdatePlayer(void)
 				player1->Turn = true;
 			}
 			TurnCamera(1);
+			SetCameraZ(1);
 		}
 
 		if (GetKeyboardTrigger(DIK_2))
@@ -275,16 +286,24 @@ void UpdatePlayer(void)
 				player2->Turn = true;
 			}
 			TurnCamera(2);
+			SetCameraZ(2);
 		}
 		SetViewport();
 	}
 	
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (g_update[i])
+		if (g_update_x[i])
 		{
-			SetCameraPos(i);
-			g_update[i] = false;
+			SetCameraX(0);
+			SetCameraX(i + 1);
+			g_update_x[i] = false;
+		}
+		if (g_update_z[i])
+		{
+			SetCameraZ(0);
+			SetCameraZ(i + 1);
+			g_update_z[i] = false;
 		}
 	}
 }

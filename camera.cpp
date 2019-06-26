@@ -12,7 +12,7 @@
 // マクロ定義
 //*****************************************************************************
 #define	CAM_POS_P_X			(0.0f)					// カメラの視点初期位置(X座標)
-#define	CAM_POS_P_Y			(50.0f)				// カメラの視点初期位置(Y座標)
+#define	CAM_POS_P_Y			(50.0f)					// カメラの視点初期位置(Y座標)
 #define	CAM_POS_P_Z			(-200.0f)				// カメラの視点初期位置(Z座標)
 #define	CAM_POS_R_X			(0.0f)					// カメラの注視点初期位置(X座標)
 #define	CAM_POS_R_Y			(0.0f)					// カメラの注視点初期位置(Y座標)
@@ -102,16 +102,13 @@ void UpdateCamera(void)
 	PLAYER *player1 = GetPlayer(0);
 	PLAYER *player2 = GetPlayer(1);
 
-	if (CheakTurn())
+	if (player2->pos.x - player1->pos.x <= 200.0f && CheckTurn())
 	{
-		if (player2->pos.x - player1->pos.x <= 200.0f)
-		{
-			g_gouryu = true;
-		}
-		else
-		{
-			g_gouryu = false;
-		}
+		g_gouryu = true;
+	}
+	else
+	{
+		g_gouryu = false;
 	}
 
 	if (g_gouryu)
@@ -128,6 +125,8 @@ void UpdateCamera(void)
 			g_Aspect = SetAspect();
 
 			SetViewport();
+
+			SetCameraZ(0);
 
 			g_up = true;
 		}
@@ -277,15 +276,115 @@ void SetCameraRot(void)
 }
 
 //=============================================================================
-// カメラの位置・注視点の設定
+// カメラの位置(X)の設定
 //=============================================================================
-void SetCameraPos(int num)
+void SetCameraX(int num)
 {
-	PLAYER *player = GetPlayer(num);
-	CAMERA *camera = GetCamera(num + 1);
+	if (num == 0)
+	{
+		SetCamera0PosAt();
+	}
+	else
+	{
+		PLAYER *player = GetPlayer(num - 1);
+		CAMERA *camera = GetCamera(num);
 
-	camera->posEye.x = player->pos.x;
-	camera->posAt.x = player->pos.x;
+		camera->posEye.x = player->pos.x;
+		camera->posAt.x = player->pos.x;
+	}
+}
+
+//=============================================================================
+// カメラの位置(Z)の設定
+//=============================================================================
+void SetCameraZ(int num)
+{
+	PLAYER *player;
+	CAMERA *camera;
+
+	if (num == 0)
+	{
+		PLAYER *player1 = GetPlayer(0);
+		PLAYER *player2 = GetPlayer(1);
+
+		camera = GetCamera(num);
+
+		if (GetTurn(0))
+		{
+			if (player1->pos.z > player2->pos.z)
+			{
+				player = player1;
+			}
+			else
+			{
+				player = player2;
+			}
+		}
+		if (player1->pos.z < player2->pos.z)
+		{
+			player = player1;
+		}
+		else
+		{
+			player = player2;
+		}
+	}
+	else
+	{
+		player = GetPlayer(num - 1);
+		camera = GetCamera(num);
+
+		num--;
+	}
+
+	//if (g_gouryu)
+	//{
+	//	PLAYER *player1 = GetPlayer(num);
+	//	PLAYER *player2 = GetPlayer((num + 1) % 2);
+
+	//	camera = GetCamera(0);
+
+	//	if (player1->pos.z < player2->pos.z)
+	//	{
+	//		player = player1;
+	//	}
+	//	else
+	//	{
+	//		player = player2;
+	//	}
+	//}
+	//else
+	//{
+	//	player = GetPlayer(num);
+	//	camera = GetCamera(num + 1);
+	//}
+
+	if (GetTurn(num))
+	{
+		camera->posEye.z = player->pos.z - CAM_POS_P_Z;
+		if (camera->posEye.z < -CAM_POS_P_Z)
+		{
+			camera->posEye.z = -CAM_POS_P_Z;
+			camera->posAt.z = CAM_POS_R_Z;
+		}
+		else
+		{
+			camera->posAt.z = player->pos.z;
+		}
+	}
+	else
+	{
+		camera->posEye.z = player->pos.z + CAM_POS_P_Z;
+		if (camera->posEye.z > CAM_POS_P_Z)
+		{
+			camera->posEye.z = CAM_POS_P_Z;
+			camera->posAt.z = CAM_POS_R_Z;
+		}
+		else
+		{
+			camera->posAt.z = player->pos.z;
+		}
+	}
 }
 
 //=============================================================================
@@ -367,15 +466,6 @@ void SetCamera0PosAt(void)
 
 	CAMERA *camera = GetCamera(0);
 
-	if (player1->Turn && player2->Turn)
-	{
-		camera->posEye.z = -CAM_POS_P_Z;
-	}
-	else
-	{
-		camera->posEye.z = CAM_POS_P_Z;
-	}
-
 	if (player1->pos.x * player2->pos.x > -1)
 	{
 		camera->posEye.x = (player2->pos.x + player1->pos.x) / 2;
@@ -408,7 +498,7 @@ void TurnCamera(int playerno)
 	camera->posEye.z *= -1.0f;
 }
 
-bool CheakTurn(void)
+bool CheckTurn(void)
 {
 	PLAYER *player1 = GetPlayer(0);
 	PLAYER *player2 = GetPlayer(1);

@@ -37,7 +37,8 @@ void UninitCamera(void);
 void UpdateCamera(void);
 
 void SetCamera(int no);
-void SetCameraPos(int num);
+void SetCameraX(int num);
+void SetCameraZ(int num);
 
 void TurnCamera(int playerno);
 
@@ -47,6 +48,6 @@ D3DXMATRIX GetMtxView(void);
 CAMERA *GetCamera(int no);
 
 bool GetGouryu(void);
-bool CheakTurn(void);
+bool CheckTurn(void);
 
 #endif

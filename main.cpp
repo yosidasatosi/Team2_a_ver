@@ -458,7 +458,7 @@ void Draw(void)
 {
 	int camera_num = GetCameraNum();
 
-	if (CheakTurn())
+	if (CheckTurn())
 	{
 		for (int i = 0; i < camera_num; i++)
 		{
@@ -738,6 +738,10 @@ void DrawDebug(void)
 	rect.top = 160;
 	wsprintf(str, "2P用ビューポート X:%d Y:%d WIDTH:%d HEIGHT:%d\n", g_port[1].X, g_port[1].Y, g_port[1].Width, g_port[1].Height);
 	g_pD3DXFont->DrawTextA(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
+
+	rect.top = 180;
+	wsprintf(str, "カメラ0の注視点 X:%d Y:%d Z:%d\n", (int)camera->posAt.x * 1000, (int)camera->posAt.y * 1000, (int)camera->posAt.z * 1000);
+	g_pD3DXFont->DrawText(NULL, str, -1, &rect, DT_LEFT, D3DCOLOR_ARGB(0xff, 0xff, 0xff, 0xff));
 }
 
 //=============================================================================
