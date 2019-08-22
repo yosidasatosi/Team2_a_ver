@@ -8,12 +8,11 @@
 #define _CAMERA_H_
 
 #include "main.h"
-#include "player.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define CAMERA_MAX		(PLAYER_MAX + 1) // 0:合流時用　1:1P用　2:2P用
+#define CAMERA_MAX		(3) // 0:合流時用　1:1P用　2:2P用
 
 //*****************************************************************************
 // 構造体定義
@@ -24,9 +23,6 @@ typedef struct
 	D3DXVECTOR3		posAt;				// カメラの注視点
 	D3DXVECTOR3		vecUp;				// カメラの上方向
 	D3DXVECTOR3		rot;				// カメラの回転
-
-	bool			turn;				// true:回転動作状態　false:非回転動作状態
-	float			fLengthInterval;	// カメラの視点と注視点の距離
 } CAMERA;
 
 //*****************************************************************************
@@ -36,6 +32,7 @@ HRESULT InitCamera(void);
 void UninitCamera(void);
 void UpdateCamera(void);
 
+void SetUseCamera(int no);
 void SetCamera(int no);
 void SetCameraX(int num);
 void SetCameraZ(int num);
@@ -49,5 +46,10 @@ CAMERA *GetCamera(int no);
 
 bool GetGouryu(void);
 bool CheckTurn(void);
+
+void Viewport(int no);
+void SetViewport(void);
+
+D3DVIEWPORT9 *GetPort(int no);
 
 #endif

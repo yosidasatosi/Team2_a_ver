@@ -126,22 +126,34 @@
   <ItemGroup>
     <ClInclude Include="billboard.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="fade.h" />
     <ClInclude Include="field.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="physic.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="render.h" />
+    <ClInclude Include="result.h" />
+    <ClInclude Include="star1.h" />
+    <ClInclude Include="title.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="fade.cpp" />
     <ClCompile Include="field.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physic.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="render.cpp" />
+    <ClCompile Include="result.cpp" />
+    <ClCompile Include="star1.cpp" />
+    <ClCompile Include="title.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
