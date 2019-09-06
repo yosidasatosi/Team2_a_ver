@@ -14,6 +14,7 @@
 #include "title.h"
 #include "result.h"
 #include "fade.h"
+#include "skybox.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -59,6 +60,9 @@ HRESULT InitGame(void)
 	// ギミック(スター1)
 	InitStar1();
 
+	// スカイボックス初期化
+	InitSkybox();
+
 	return S_OK;
 }
 
@@ -80,6 +84,9 @@ void UninitGame(void)
 
 	// ギミック(スター1)の終了処理
 	UninitStar1();
+
+	// スカイボックス終了処理
+	UninitSkybox();
 }
 
 void UpdateGame(void)
@@ -98,6 +105,9 @@ void UpdateGame(void)
 
 	// ギミック(スター1)の更新処理
 	UpdateStar1();
+
+	// 空更新処理
+	UpdateSkybox();
 }
 
 void DrawGame(void)
@@ -211,6 +221,12 @@ void DrawGame(void)
 
 void GameObject(void)
 {
+	for (int i = 0; i < CAMERA_MAX; i++)
+	{
+		// 空描画
+		DrawSkybox(i);
+	}
+
 	// フィールドの描画処理
 	DrawField();
 

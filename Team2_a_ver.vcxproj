@@ -136,6 +136,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="skybox.h" />
     <ClInclude Include="star1.h" />
     <ClInclude Include="title.h" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="skybox.cpp" />
     <ClCompile Include="star1.cpp" />
     <ClCompile Include="title.cpp" />
   </ItemGroup>
