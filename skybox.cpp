@@ -15,12 +15,12 @@
 
 const char* SkyboxTextureName[6] =
 {
-	"data/TEXTURE/sky_front.png",
-	"data/TEXTURE/sky_back.png",
-	"data/TEXTURE/sky_left.png",
-	"data/TEXTURE/sky_right.png",
-	"data/TEXTURE/sky_top.png",
-	"data/TEXTURE/sky_down.png",
+	"data/TEXTURE/sterbak2.jpg",
+	"data/TEXTURE/sterbak.jpg",
+	"data/TEXTURE/sterbak2.jpg",
+	"data/TEXTURE/sterbak.jpg",
+	"data/TEXTURE/sterbak2.jpg",
+	"data/TEXTURE/sterbak.jpg",
 };
 
 //*****************************************************************************

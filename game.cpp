@@ -15,6 +15,7 @@
 #include "result.h"
 #include "fade.h"
 #include "skybox.h"
+#include "wall.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -63,6 +64,9 @@ HRESULT InitGame(void)
 	// スカイボックス初期化
 	InitSkybox();
 
+	//ウォール初期化
+	InitWall();
+
 	return S_OK;
 }
 
@@ -87,6 +91,11 @@ void UninitGame(void)
 
 	// スカイボックス終了処理
 	UninitSkybox();
+
+	//ウォール終了処理
+	UninitWall();
+
+
 }
 
 void UpdateGame(void)
@@ -108,6 +117,10 @@ void UpdateGame(void)
 
 	// 空更新処理
 	UpdateSkybox();
+
+	// 壁更新処理
+	UpdateWall();
+
 }
 
 void DrawGame(void)
@@ -226,6 +239,8 @@ void GameObject(void)
 		// 空描画
 		DrawSkybox(i);
 	}
+	// 壁の描画処理
+	DrawWall();
 
 	// フィールドの描画処理
 	DrawField();
@@ -235,6 +250,8 @@ void GameObject(void)
 
 	// スター1の描画処理
 	DrawStar1();
+
+
 }
 
 void GameUI(void)
