@@ -33,7 +33,7 @@ void SetTexturePlayer(int no, int cntPattern);
 // グローバル変数
 //*****************************************************************************
 PLAYER				playerWk[PLAYER_MAX];		// 構造体
-
+LPDIRECT3DTEXTURE9	pD3DTexturePlayer;			// テクスチャへのポインタ
 D3DXMATRIX			g_mtxWorldPlayer;			// ワールドマトリックス
 int					g_player;					// プレイヤーナンバー
 
@@ -67,6 +67,12 @@ HRESULT InitPlayer(void)
 		D3DXCreateTextureFromFile(pDevice,					// デバイスへのポインタ
 			TEXTURE_PLAYER,		// ファイルの名前
 									&player->pD3DTexture);	// 読み込むメモリー
+
+				// テクスチャの読み込み
+		D3DXCreateTextureFromFile(pDevice,					// デバイスへのポインタ
+			TEXTURE_PLAYER,		// ファイルの名前
+			&player->pD3DTexture);	// 読み込むメモリ
+
 
 	}
 
