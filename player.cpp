@@ -24,6 +24,8 @@
 #define ANIM_PATTERN_NUM			(TEXTURE_PATTERN_DIVIDE_X*TEXTURE_PATTERN_DIVIDE_Y)	// アニメーションパターン数
 #define TIME_ANIMATION				(4)	// アニメーションの切り替わるカウント
 
+#define DEFAULT_POS		(500.0f)	// プレイヤーの初期位置(1P)
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -60,7 +62,7 @@ HRESULT InitPlayer(void)
 		MakeVertexPlayer(pDevice,i);
 
 		// 大きさ、位置、向きの初期設定
-		player->pos = D3DXVECTOR3(-150.0f + i * 300, 10.0f, 0.0f);
+		player->pos = D3DXVECTOR3(-DEFAULT_POS + i * (DEFAULT_POS * 2), 10.0f, 0.0f);
 		player->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player->scl = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 		
