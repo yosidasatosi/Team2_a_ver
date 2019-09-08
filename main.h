@@ -43,6 +43,8 @@
 #define	NUM_VERTEX		(4)		// 頂点数
 #define	NUM_POLYGON		(2)		// ポリゴン数
 
+#define FRAME_MAX		(60)	// 1秒のフレーム数
+
 // 上記２Ｄポリゴン頂点フォーマットに合わせた構造体を定義
 typedef struct
 {
@@ -61,11 +63,25 @@ typedef struct
 	D3DXVECTOR2 tex;		// テクスチャ座標
 } VERTEX_3D;
 
+//*************************************
+// モードの種類
+//*************************************
+typedef enum
+{
+	MODE_TITLE,				// タイトル画面
+	MODE_GAME,				// ゲーム画面
+	MODE_RESULT,			// リザルト画面
+	MODE_MAX
+} MODE;
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
 LPDIRECT3DDEVICE9 GetDevice(void);
-void SetViewport(void);
+//void SetViewport(void);
+bool CheckHitBC(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2, float size1, float size2);
+void SetMode(MODE mode);
+MODE GetMode(void);
 
 //*****************************************************************************
 //レンダリングテクスチャ関連

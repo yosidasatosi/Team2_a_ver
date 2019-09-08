@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "input.h"
 #include "physic.h"
+#include "fade.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -22,12 +23,12 @@
 #define TEXTURE_PATTERN_DIVIDE_Y	(2)	// アニメパターンのテクスチャ内分割数（Y)
 #define ANIM_PATTERN_NUM			(TEXTURE_PATTERN_DIVIDE_X*TEXTURE_PATTERN_DIVIDE_Y)	// アニメーションパターン数
 #define TIME_ANIMATION				(4)	// アニメーションの切り替わるカウント
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
 HRESULT MakeVertexPlayer(LPDIRECT3DDEVICE9 pDevice, int no);
 void SetTexturePlayer(int no, int cntPattern);
-
 
 //*****************************************************************************
 // グローバル変数
@@ -39,6 +40,8 @@ int					g_player;					// プレイヤーナンバー
 
 bool				g_update_x[PLAYER_MAX];
 bool				g_update_z[PLAYER_MAX];
+
+bool				g_clear;
 
 //=============================================================================
 // 初期化処理
@@ -57,7 +60,7 @@ HRESULT InitPlayer(void)
 		MakeVertexPlayer(pDevice,i);
 
 		// 大きさ、位置、向きの初期設定
-		player->pos = D3DXVECTOR3(-100.0f + i * 200, 10.0f, 0.0f);
+		player->pos = D3DXVECTOR3(-150.0f + i * 300, 10.0f, 0.0f);
 		player->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player->scl = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 		
@@ -143,55 +146,53 @@ void UpdatePlayer(void)
 	// カメラの向き取得
 	rotCamera = GetRotCamera(0);
 
+	// プレイヤー1のX更新
 	if (GetKeyboardPress(DIK_A) || GetKeyboardPress(DIK_D))
 	{
 		g_update_x[0] = true;
 	}
-
-	if (GetKeyboardPress(DIK_LEFT) || GetKeyboardPress(DIK_RIGHT))
-	{
-		g_update_x[1] = true;
-	}
-
+	// プレイヤー1のZ更新
 	if (GetKeyboardPress(DIK_W) || GetKeyboardPress(DIK_S))
 	{
 		g_update_z[0] = true;
 	}
 
+	// プレイヤー2のX更新
+	if (GetKeyboardPress(DIK_LEFT) || GetKeyboardPress(DIK_RIGHT))
+	{
+		g_update_x[1] = true;
+	}
+	// プレイヤー2のZ更新
 	if (GetKeyboardPress(DIK_UP) || GetKeyboardPress(DIK_DOWN))
 	{
 		g_update_z[1] = true;
 	}
 
+	// プレイヤー1移動処理
 	if(GetKeyboardPress(DIK_D))
-	{
+	{// 右移動
 		player1->pos.x -= sinf(rotCamera.y + D3DX_PI * 0.50f) * VALUE_MOVE_MODEL;
 		player1->pos.z -= cosf(rotCamera.y + D3DX_PI * 0.50f) * VALUE_MOVE_MODEL;
 		player1->sayuu = true;
 	}
 	else if (GetKeyboardPress(DIK_A))
-	{
+	{// 左移動
 		player1->pos.x -= sinf(rotCamera.y - D3DX_PI * 0.50f) * VALUE_MOVE_MODEL;
 		player1->pos.z -= cosf(rotCamera.y - D3DX_PI * 0.50f) * VALUE_MOVE_MODEL;
 		player1->sayuu = false;
-
 	}
 	else if (GetKeyboardPress(DIK_W))
-	{
+	{// 奥移動
 		player1->pos.z += VALUE_MOVE_MODEL;
-	
-
 	}
 	else if (GetKeyboardPress(DIK_S))
-	{
+	{// 手前移動
 		player1->pos.z -= VALUE_MOVE_MODEL;
-
 	}
 
-
-
+	// プレイヤー1
 	if (player1->jump == true)
-	{
+	{// ジャンプ
 
 		FreeFallMotion(&player1->pos.y, &player1->speed, &player1->a);
 
@@ -312,6 +313,14 @@ void UpdatePlayer(void)
 			g_update_z[i] = false;
 		}
 	}
+
+	if (CheckTurn())
+	{
+		if (CheckClear())
+		{
+			SetFade(FADE_OUT);
+		}
+	}
 }
 
 //=============================================================================
@@ -380,14 +389,6 @@ void DrawPlayer(void)
 		// ラインティングを有効にする
 		pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	}
-
-
-}
-
-bool GetTurn(int no)
-{
-	PLAYER *player = GetPlayer(no);
-	return player->Turn;
 }
 
 //=============================================================================
@@ -485,10 +486,35 @@ void SetTexturePlayer(int no, int cntPattern)
 
 	}
 }
+
+bool CheckClear(void)
+{
+	PLAYER *player1 = GetPlayer(0);
+	PLAYER *player2 = GetPlayer(1);
+
+	g_clear = CheckHitBC(player1->pos, player2->pos, PLAYER_SIZE_X / 2, PLAYER_SIZE_X / 2);
+
+	return g_clear;
+}
+
+//=============================================================================
+// プレイヤーのTurnの取得
+//=============================================================================
+bool GetTurn(int no)
+{
+	PLAYER *player = GetPlayer(no);
+	return player->Turn;
+}
+
 //*****************************************************************************
 // プレイヤーゲット関数
 //*****************************************************************************
 PLAYER *GetPlayer(int no)
 {
 	return (&playerWk[no]);
+}
+
+bool GetClear(void)
+{
+	return g_clear;
 }

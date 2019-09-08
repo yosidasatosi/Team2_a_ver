@@ -25,7 +25,7 @@ typedef struct
 
 	bool				jump;
 	bool				Turn;				// ƒJƒƒ‰‰ñ“] true:‰ñ“]ó‘Ô@false:”ñ‰ñ“]ó‘Ô
-	bool				sayuu;						//¶‰EŒü‚«
+	bool				sayuu;				// ¶‰EŒü‚«
 	float				speed;
 	float				a;
 
@@ -46,7 +46,8 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 
 bool GetTurn(int no);
+bool CheckClear(void);
 PLAYER *GetPlayer(int no);
-
+bool GetClear(void);
 
 #endif
