@@ -14,7 +14,7 @@
 //*****************************************************************************
 #define STAR1_MAX			(3)
 
-#define STAR1_BASE_MAX		(200)
+#define STAR1_BASE_MAX		(100)
 #define STAR1_BASE_FULL		(STAR1_MAX * STAR1_BASE_MAX)
 
 #define STAR1_SECN			(5)

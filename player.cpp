@@ -14,7 +14,7 @@
 // マクロ定義
 //*****************************************************************************
 #define	MODEL_CAR			"data/MODEL/car000.x"	// 読み込むモデルファイル名
-#define	VALUE_MOVE_MODEL	(5.0f)					// 移動速度
+#define	VALUE_MOVE_MODEL	(5.0f / 2)					// 移動速度
 #define	VALUE_ROTATE_MODEL	(D3DX_PI * 0.02f)		// 回転速度
 #define	PLAYER_SIZE_X		(20.0f)							// ビルボードの幅
 #define	PLAYER_SIZE_Y		(20.0f)							// ビルボードの高さ
@@ -24,7 +24,7 @@
 #define ANIM_PATTERN_NUM			(TEXTURE_PATTERN_DIVIDE_X*TEXTURE_PATTERN_DIVIDE_Y)	// アニメーションパターン数
 #define TIME_ANIMATION				(4)	// アニメーションの切り替わるカウント
 
-#define DEFAULT_POS		(500.0f)	// プレイヤーの初期位置(1P)
+#define DEFAULT_POS		(2500.0f)	// プレイヤーの初期位置(1P)
 
 //*****************************************************************************
 // プロトタイプ宣言
