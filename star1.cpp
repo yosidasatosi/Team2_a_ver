@@ -50,6 +50,7 @@ void	SetColorStar1(STAR1_SEC *sec);
 //*****************************************************************************
 LPDIRECT3DTEXTURE9	g_pD3DTextureStar1 = NULL;
 
+STAR1				star1Wk[STAR1_MAX];					// 構造体
 STAR1_BASE			star1BaseWk[STAR1_BASE_MAX];		// 構造体
 STAR1_SEC			star1SecWk[STAR1_SEC_MAX];			// 構造体
 
@@ -62,7 +63,8 @@ HRESULT InitStar1(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	STAR1_BASE *base = GetStar1Base(0);
+	STAR1 *star = GetStar1(0);
+	//STAR1_BASE *base = GetStar1Base(0);
 	STAR1_SEC *sec = GetStar1Sec(0);
 
 	// テクスチャの読み込み
@@ -70,22 +72,56 @@ HRESULT InitStar1(void)
 		TEXTURE_STAR1,					// ファイルの名前
 		&g_pD3DTextureStar1);					// 読み込むメモリー
 
-	// パラメータの設定
-	for (int i = 0; i < STAR1_BASE_MAX; i++, base++)
+	for (int i = 0; i < STAR1_MAX; i++, star++)
 	{
-		if ((rand() % STAR1_USE_RAND_MAX) == 0)
+		star->base = GetStar1Base(STAR1_BASE_MAX * i);
+		switch (i)
 		{
-			base->use = true;
+		case 0:
+			star->pos = D3DXVECTOR3(400.0f, 60.0f, -20.0f);
+			break;
+		case 1:
+			star->pos = D3DXVECTOR3(-300.0f, 60.0f, -20.0f);
+			break;
+		case 2:
+			star->pos = D3DXVECTOR3(100.0f, 60.0f, -20.0f);
+			break;
 		}
-		else
+
+		// パラメータの設定
+		for (int j = 0; j < STAR1_BASE_MAX; j++, star->base++)
 		{
-			base->use = false;
+			if ((rand() % STAR1_USE_RAND_MAX) == 0)
+			{
+				star->base->use = true;
+			}
+			else
+			{
+				star->base->use = false;
+			}
+			star->base->pos = star->pos;
+			star->base->pos.x += (rand() % STAR1_POS_X_RANGE_MAX - STAR1_POS_X_RANGE_MID);
+			star->base->pos.y += (rand() % STAR1_POS_Y_RANGE_MAX - STAR1_POS_Y_RANGE_MID);
+			star->base->secNo = (j / STAR1_SECN);
 		}
-		base->pos = D3DXVECTOR3(STAR1_POS_X, STAR1_POS_Y, STAR1_POS_Z);
-		base->pos.x += (rand() % STAR1_POS_X_RANGE_MAX - STAR1_POS_X_RANGE_MID);
-		base->pos.y += (rand() % STAR1_POS_Y_RANGE_MAX - STAR1_POS_Y_RANGE_MID);
-		base->secNo = (i / STAR1_SECN);
 	}
+
+	//// パラメータの設定
+	//for (int i = 0; i < STAR1_BASE_MAX; i++, base++)
+	//{
+	//	if ((rand() % STAR1_USE_RAND_MAX) == 0)
+	//	{
+	//		base->use = true;
+	//	}
+	//	else
+	//	{
+	//		base->use = false;
+	//	}
+	//	base->pos = D3DXVECTOR3(STAR1_POS_X, STAR1_POS_Y, STAR1_POS_Z);
+	//	base->pos.x += (rand() % STAR1_POS_X_RANGE_MAX - STAR1_POS_X_RANGE_MID);
+	//	base->pos.y += (rand() % STAR1_POS_Y_RANGE_MAX - STAR1_POS_Y_RANGE_MID);
+	//	base->secNo = (i / STAR1_SECN);
+	//}
 
 	for (int i = 0; i < STAR1_SEC_MAX; i++, sec++)
 	{
@@ -136,7 +172,7 @@ void UpdateStar1(void)
 {
 	STAR1_BASE *base = GetStar1Base(0);
 
-	for (int i = 0; i < STAR1_BASE_MAX; i++, base++)
+	for (int i = 0; i < STAR1_BASE_FULL; i++, base++)
 	{
 		STAR1_SEC *sec = GetStar1Sec(base->secNo);
 
@@ -192,7 +228,7 @@ void DrawStar1(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxView, mtxScale,mtxRot, mtxTranslate;
 
-	for (int i = 0; i < STAR1_BASE_MAX; i++, base++)
+	for (int i = 0; i < STAR1_BASE_FULL; i++, base++)
 	{
 		if (base->use)
 		{
@@ -307,6 +343,11 @@ void SetColorStar1(STAR1_SEC *sec)
 		// 頂点データをアンロックする
 		sec->pD3DVtxBuff->Unlock();
 	}
+}
+
+STAR1 *GetStar1(int no)
+{
+	return (&star1Wk[no]);
 }
 
 //=============================================================================
