@@ -221,10 +221,20 @@ void DrawGame(void)
 
 void GameObject(void)
 {
-	for (int i = 0; i < CAMERA_MAX; i++)
-	{
+	//for (int i = 0; i < CAMERA_MAX; i++)
+	//{
 		// ‹ó•`‰æ
-		DrawSkybox(i);
+		//DrawSkybox(0);
+	//}
+
+	if (GetCameraNum() == 1)
+	{
+		DrawSkybox(0);
+	}
+	else if(GetCameraNum() == 2)
+	{
+		DrawSkybox(1);
+		DrawSkybox(2);
 	}
 
 	// ƒtƒB[ƒ‹ƒh‚Ì•`‰æˆ—
